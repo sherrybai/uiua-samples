@@ -1,3 +1,5 @@
+# first attempt at writing FizzBuzz
+
 ReplaceMultipleWithWord ← (
   ⊙△ ⊙. ⊙: # duplicate input array and get shape
   ⌈ ◡÷     # get rows by dividing shape by divisor. keep shape and divisor on stack underneath rows

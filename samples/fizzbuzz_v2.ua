@@ -1,4 +1,4 @@
-# same as fizzbuzz.ua, but trying to use planet notation
+# same as fizzbuzz_v1.ua, but trying to use planet notation
 
 ReplaceMultipleWithWord ← (
   ⊙⊙⊃△∘               # take the shape of input array (bottom of stack)
