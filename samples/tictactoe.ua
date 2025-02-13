@@ -23,10 +23,11 @@ CheckForPlayerWin ← ↥⊃(CheckRowsColsForWin)(CheckDiagonalsForWin)
 CheckForWin       ← ↥⊃(CheckForPlayerWin =X|CheckForPlayerWin =O)
 
 # read and parse indices from standard input
-ReadFromStdin ← (
+ParsePositionFromStdin ← (
   ⊜□⊸≠@, &sc # split by ,
-  -@0        # to integer
-  ♭ ∵°□      # unbox and deshape
+  -@0        # digits to integers
+  ∵(⇌°⊏°□)   # unbox each item and create array of exponents [..., 2, 1, 0]
+  ≡/+ × ⁿ:10 # multiply each digit by appropriate power of 10
 )
 
 # whose turn is it?
@@ -39,7 +40,7 @@ X
 ⍢(
   ⊃(⋅(&pf ⨬("X"|"O") -1))(⊙∘) # whose turn is 2 places back in the stack
   &p " to play"
-  ReadFromStdin
+  ParsePositionFromStdin
   ⨬(PlayX|PlayO) ⊃(⋅⋅(-1))(⊙⊙(+1 ◿2)) # play based on current turn and then update the turn in place
   ⊃(&s ↯[N N]⨬({"_"}|{"X"}|{"0"}))(∘) # print a formatted representation of the board
 )(¬CheckForWin .)
