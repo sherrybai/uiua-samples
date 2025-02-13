@@ -20,8 +20,8 @@ O                 ← 2
 PlayX             ← ⍜⊡(X◌)
 PlayO             ← ⍜⊡(O◌)
 CheckForPlayerWin ← ↥⊃(CheckRowsColsForWin)(CheckDiagonalsForWin)
-CheckNobodyWins   ← ≠0 /↧/↧ # no empty spaces
-CheckForWin       ← |1 /↥[⊃(CheckForPlayerWin =X|CheckForPlayerWin =O|⊙◌ CheckNobodyWins .)]
+CheckGameIsOver   ← ≠0 /↧/↧ # no empty spaces
+CheckForWin       ← |1 /↥[⊃(CheckForPlayerWin =X|CheckForPlayerWin =O|⊙◌ CheckGameIsOver .)]
 
 # read and parse indices from standard input
 ParsePositionFromStdin ← (
@@ -51,11 +51,11 @@ PositionIsValid ← (
   ⨬(&p "Invalid move" ⋅⊙∘               # if move is invalid, print error message and pop off bad move
   | ⨬(PlayX|PlayO) ⊃(⋅⋅(-1))(⊙⊙(+1 ◿2)) # play based on current turn and then update the turn in place
   ) PositionIsValid
-  &s ↯[N N]⨬({"_"}|{"X"}|{"0"}) . # print a formatted representation of the board
+  &s ↯[N N]⨬({"_"}|{"X"}|{"O"}) . # print a formatted representation of the board
 )(¬CheckForWin .)
 
 # print who won
-&pf⨬(⨬("X"|"O")(CheckForPlayerWin =O))("Nobody") CheckNobodyWins .
+&pf⨬("Nobody"|"X"|"O")(+⊙(×2)⊃(CheckForPlayerWin =X)(CheckForPlayerWin =O))
 &p " wins!"
 
 # avoid displaying turn when program exits
