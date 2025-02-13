@@ -24,10 +24,9 @@ CheckForWin       ← ↥⊃(CheckForPlayerWin =X|CheckForPlayerWin =O)
 
 # read and parse indices from standard input
 ParsePositionFromStdin ← (
-  ⊜□⊸≠@, &sc # split by ,
-  -@0        # digits to integers
-  ⊃(⊢)(⊣)
-  [∩(/+ × ⁿ:10 ⇌°⊏°□)] # unbox each item and multiply each digit by appropriate power of 10
+  ⊜□⊸≠@, &sc         # split by ,
+  -@0                # digits to integers
+  ≡(/+ × ⁿ:10 ⇌°⊏°□) # unbox each item and multiply each digit by appropriate power of 10
 )
 
 PositionIsValid ← (
@@ -50,7 +49,7 @@ X
   ⨬(&p "Invalid move" ⋅⊙∘               # if move is invalid, print error message and pop off bad move
   | ⨬(PlayX|PlayO) ⊃(⋅⋅(-1))(⊙⊙(+1 ◿2)) # play based on current turn and then update the turn in place
   ) PositionIsValid
-  ⊃(&s ↯[N N]⨬({"_"}|{"X"}|{"0"}))(∘) # print a formatted representation of the board
+  &s ↯[N N]⨬({"_"}|{"X"}|{"0"}) . # print a formatted representation of the board
 )(¬CheckForWin .)
 
 # print who won
