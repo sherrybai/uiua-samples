@@ -26,8 +26,14 @@ CheckForWin       ← ↥⊃(CheckForPlayerWin =X|CheckForPlayerWin =O)
 ParsePositionFromStdin ← (
   ⊜□⊸≠@, &sc # split by ,
   -@0        # digits to integers
-  ∵(⇌°⊏°□)   # unbox each item and create array of exponents [..., 2, 1, 0]
-  ≡/+ × ⁿ:10 # multiply each digit by appropriate power of 10
+  ⊃(⊢)(⊣)
+  [∩(/+ × ⁿ:10 ⇌°⊏°□)] # unbox each item and multiply each digit by appropriate power of 10
+)
+
+PositionIsValid ← (
+  /↧↧⊃(<N|≥0|∘)            # all values have to be within [0, N)
+  ⨬(0⊙⊙∘|⊃(⋅(=0⊡))(⊙⊙∘)) . # if within bounds, space has to be empty
+  ↧                        # AND both values
 )
 
 # whose turn is it?
@@ -41,7 +47,9 @@ X
   ⊃(⋅(&pf ⨬("X"|"O") -1))(⊙∘) # whose turn is 2 places back in the stack
   &p " to play"
   ParsePositionFromStdin
-  ⨬(PlayX|PlayO) ⊃(⋅⋅(-1))(⊙⊙(+1 ◿2)) # play based on current turn and then update the turn in place
+  ⨬(&p "Invalid move" ⋅⊙∘               # if move is invalid, print error message and pop off bad move
+  | ⨬(PlayX|PlayO) ⊃(⋅⋅(-1))(⊙⊙(+1 ◿2)) # play based on current turn and then update the turn in place
+  ) PositionIsValid
   ⊃(&s ↯[N N]⨬({"_"}|{"X"}|{"0"}))(∘) # print a formatted representation of the board
 )(¬CheckForWin .)
 
