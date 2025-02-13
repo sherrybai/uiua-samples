@@ -1,17 +1,17 @@
 N ← 3 # board size
 
 CheckRowsColsForWin ← (
-  [⊃(/↥/+|/↥≡/+)] # max sum of rows, max sum of columns
-  /↥              # maximum across all categories
-  =N              # return if any value is 3
+  ⊃(/↥/+|/↥≡/+) # max sum of rows, max sum of columns
+  ↥             # maximum across all categories
+  =N            # return if any value is 3
 )
 
 CheckDiagonalsForWin ← (
   ♭
   # left diagonal: checking index 0, 4, 8
   # right diagonal: checking index 2, 4, 6
-  [⊃(/+⊏(×(+1 N) ⇡N))(/+⊏(+(-1 N)×(-1 N)⇡N))]
-  /↥
+  ⊃(/+⊏(×(+1 N) ⇡N))(/+⊏(+(-1 N)×(-1 N)⇡N))
+  ↥
   =N
 )
 
