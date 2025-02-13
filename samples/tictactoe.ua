@@ -20,7 +20,8 @@ O                 ← 2
 PlayX             ← ⍜⊡(X◌)
 PlayO             ← ⍜⊡(O◌)
 CheckForPlayerWin ← ↥⊃(CheckRowsColsForWin)(CheckDiagonalsForWin)
-CheckForWin       ← ↥⊃(CheckForPlayerWin =X|CheckForPlayerWin =O)
+CheckNobodyWins   ← ≠0 /↧/↧ # no empty spaces
+CheckForWin       ← |1 /↥[⊃(CheckForPlayerWin =X|CheckForPlayerWin =O|⊙◌ CheckNobodyWins .)]
 
 # read and parse indices from standard input
 ParsePositionFromStdin ← (
@@ -36,7 +37,8 @@ PositionIsValid ← (
 )
 
 # whose turn is it?
-X
+# randomly select between X=1 or O=2
++1 ⌊×2 ⚂
 
 # new board
 ↯[N N] 0
@@ -53,7 +55,7 @@ X
 )(¬CheckForWin .)
 
 # print who won
-&pf ⨬("X"|"O")(CheckForPlayerWin =O)
+&pf⨬(⨬("X"|"O")(CheckForPlayerWin =O))("Nobody") CheckNobodyWins .
 &p " wins!"
 
 # avoid displaying turn when program exits
